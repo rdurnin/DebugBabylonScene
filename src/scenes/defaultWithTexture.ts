@@ -6,6 +6,8 @@ import { NodeMaterial } from "@babylonjs/core/Materials/Node/nodeMaterial";
 import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 
+import "@babylonjs/core/Materials/Node/Blocks";
+
 import {CreateSceneClass} from "../createScene";
 
 export class DefaultSceneWithTexture implements CreateSceneClass {
@@ -16,11 +18,11 @@ export class DefaultSceneWithTexture implements CreateSceneClass {
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
-        const nodeMaterial = await NodeMaterial.ParseFromSnippetAsync("BYNH4E#35", scene);
+        const nodeMaterial = await NodeMaterial.ParseFromSnippetAsync("7IHEQT#57", scene);
     
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera(
-            "my first camera",
+            "RenderCamera",
             0,
             Math.PI / 3,
             10,
