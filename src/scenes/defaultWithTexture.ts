@@ -1,4 +1,5 @@
 import { ArcRotateCamera } from "@babylonjs/core/Cameras/arcRotateCamera";
+import { CubeTexture } from "@babylonjs/core/Materials/Textures/cubeTexture";
 import { Engine } from "@babylonjs/core/Engines/engine";
 import { GroundBuilder } from "@babylonjs/core/Meshes/Builders/groundBuilder";
 import { HemisphericLight } from "@babylonjs/core/Lights/hemisphericLight";
@@ -7,6 +8,8 @@ import { Scene } from "@babylonjs/core/scene";
 import { Vector3 } from "@babylonjs/core/Maths/math.vector";
 
 import "@babylonjs/core/Materials/Node/Blocks";
+import "@babylonjs/core/Materials/Textures/Loaders/ddsTextureLoader";
+import "@babylonjs/core/Helpers/sceneHelpers";
 
 import {CreateSceneClass} from "../createScene";
 
@@ -18,8 +21,10 @@ export class DefaultSceneWithTexture implements CreateSceneClass {
     ): Promise<Scene> => {
         // This creates a basic Babylon Scene object (non-mesh)
         const scene = new Scene(engine);
-        const nodeMaterial = await NodeMaterial.ParseFromSnippetAsync("7IHEQT#57", scene);
+        const nodeMaterial = await NodeMaterial.ParseFromSnippetAsync("5671U2#4", scene);
     
+        const url_Env = "https://raw.githubusercontent.com/rdurnin/DebugMeshesLibrary/main/metallic/shanghai_bund_8k_edited.env";
+
         // This creates and positions a free camera (non-mesh)
         const camera = new ArcRotateCamera(
             "RenderCamera",
@@ -36,13 +41,19 @@ export class DefaultSceneWithTexture implements CreateSceneClass {
         const light = new HemisphericLight("light", new Vector3(0, 1, 0), scene);
         light.intensity = 0.7;
 
+        const cubeTex = CubeTexture.CreateFromPrefilteredData(url_Env, scene);
+        scene.environmentTexture = cubeTex;
+
+        const skyBox = scene.createDefaultSkybox(cubeTex, true);
+
         const ground = GroundBuilder.CreateGround(
             "ground",
             { width: 6, height: 6 },
             scene
         ); 
         ground.material = nodeMaterial;
-    
+        ground.scaling = new Vector3(100, 100, 100);
+
         return scene;
     };
 }
